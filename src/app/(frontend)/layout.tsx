@@ -6,12 +6,22 @@ export const metadata = {
   title: 'Payload Blank Template',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
+        <nav className="bg-gray-800 text-white p-4">
+          <div className="container mx-auto">
+            <ul className="flex gap-4">
+              <li>
+                <a href="/">Home</a>
+              </li>
+              <li>
+                <a href="/posts">Blog Posts</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
         <main>{children}</main>
       </body>
     </html>
