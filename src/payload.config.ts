@@ -29,10 +29,24 @@ export default buildConfig({
   },
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
+    connectOptions: {
+      ssl: true,
+      retryWrites: true,
+      w: 'majority',
+    },
   }),
   sharp,
   plugins: [
     payloadCloudPlugin(),
     // storage-adapter-placeholder
+  ],
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
+  csrf: [
+    'https://payload-cms-test.vercel.app', // Main production URL
+    'https://payload-cms-test-*.vercel.app', // Preview deployments
+  ],
+  cors: [
+    'https://payload-cms-test.vercel.app', // Main production URL
+    'https://payload-cms-test-*.vercel.app', // Preview deployments
   ],
 })
