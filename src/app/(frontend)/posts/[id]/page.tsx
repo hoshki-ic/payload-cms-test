@@ -3,8 +3,8 @@ import { getPayload } from 'payload'
 import config from '../../../../payload.config'
 import { serializeLexicalContent } from '../../../../lib/lexical'
 
-export default async function PostPage({ params }: { params: { id: Promise<string> } }) {
-  const id = await params.id
+export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
   const post = await payload.find({

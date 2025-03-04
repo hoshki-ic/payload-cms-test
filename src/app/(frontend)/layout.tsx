@@ -1,5 +1,6 @@
 import React from 'react'
 import './styles.css'
+import Link from 'next/link'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',
@@ -14,10 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="container mx-auto">
             <ul className="flex gap-4">
               <li>
-                <a href="/">Home</a>
+                <Link href="/">Home</Link>
               </li>
               <li>
-                <a href="/posts">Blog Posts</a>
+                <Link href="/posts">Blog Posts</Link>
               </li>
             </ul>
           </div>
