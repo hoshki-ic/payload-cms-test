@@ -1,3 +1,4 @@
+import { DosAndDonts } from '@/blocks/DosAndDonts'
 import type { CollectionConfig } from 'payload'
 
 export const Posts: CollectionConfig = {
@@ -73,6 +74,11 @@ export const Posts: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
+    },
+    {
+      name: 'blocksTest',
+      type: 'blocks',
+      blocks: [DosAndDonts],
     },
   ],
 }

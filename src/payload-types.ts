@@ -188,6 +188,27 @@ export interface Post {
   featuredImage?: (string | null) | Media;
   status?: ('draft' | 'published') | null;
   publishedDate?: string | null;
+  blocksTest?:
+    | {
+        dos?:
+          | {
+              text: string;
+              image: string | Media;
+              id?: string | null;
+            }[]
+          | null;
+        donts?:
+          | {
+              text: string;
+              image: string | Media;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'dosAndDonts';
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -308,6 +329,30 @@ export interface PostsSelect<T extends boolean = true> {
   featuredImage?: T;
   status?: T;
   publishedDate?: T;
+  blocksTest?:
+    | T
+    | {
+        dosAndDonts?:
+          | T
+          | {
+              dos?:
+                | T
+                | {
+                    text?: T;
+                    image?: T;
+                    id?: T;
+                  };
+              donts?:
+                | T
+                | {
+                    text?: T;
+                    image?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
 }
