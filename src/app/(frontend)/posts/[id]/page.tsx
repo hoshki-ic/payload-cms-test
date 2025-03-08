@@ -22,8 +22,8 @@ const ItemWithImage = ({
         : '/placeholder-image.jpg'
 
   return (
-    <div key={item.id} className="flex gap-4 mb-4">
-      <Image src={imageSrc} alt={item.text} width={100} height={100} className="rounded" />
+    <div className="item-with-image">
+      <Image src={imageSrc} alt={item.text} width={100} height={100} />
       <p>{item.text}</p>
     </div>
   )
@@ -45,22 +45,23 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
   const data = JSON.parse(JSON.stringify(post.docs[0])) as Post
 
   return (
-    <div className="container mx-auto py-8">
-      <article className="prose lg:prose-xl">
+    <div className="post-container">
+      <article>
         <h1>{data.title}</h1>
-        <div className="text-sm text-gray-500 mb-8">
+        <div className="post-date">
           Published on: {new Date(data.publishedDate!).toLocaleDateString()}
         </div>
+
         <RichText data={data.content} />
 
         {data.dosAndDonts?.length && (
-          <div>
+          <div className="dos-and-donts">
             <h2>Dos and Don&apos;ts</h2>
             {data.dosAndDonts?.map(
               (block) =>
                 block.blockType === 'dosAndDonts' && (
-                  <div key={block.id} className="mt-8">
-                    <div className="mb-8">
+                  <div key={block.id}>
+                    <div>
                       <h3>Dos:</h3>
                       {block.dos?.map((item) => <ItemWithImage key={item.id} item={item} />)}
                     </div>
@@ -76,23 +77,33 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
         )}
 
         {data.accessibility?.length && (
-          <div>
+          <div className="accessibility-section">
             <h2>Accessibility</h2>
             {data.accessibility?.map(
               (block) =>
                 block.blockType === 'accessibility' && (
-                  <div key={block.id} className="mt-8">
-                    <Image
-                      // @ts-ignore
-                      src={block.mainImage.url}
-                      alt={block.type}
-                      width={100}
-                      height={100}
-                      className="rounded"
-                    />
-                    <h3>{block.type}</h3>
-                    <p>{block.description}</p>
-                    <table>
+                  <div key={block.id} className="accessibility-card">
+                    <div className="accessibility-header">
+                      <Image
+                        // @ts-ignore
+                        src={block.mainImage.url}
+                        alt={block.type}
+                        width={200}
+                        height={200}
+                      />
+                      <div className="accessibility-content">
+                        <h3>
+                          {block.type === 'keyboard_web'
+                            ? 'Keyboard (web)'
+                            : block.type === 'screen_reader_web'
+                              ? 'Screen Reader (web)'
+                              : 'Screen Reader (Mobile)'}
+                        </h3>
+                        {block.description && <p>{block.description}</p>}
+                      </div>
+                    </div>
+
+                    <table className="accessibility-table">
                       <thead>
                         <tr>
                           <th>Property</th>
