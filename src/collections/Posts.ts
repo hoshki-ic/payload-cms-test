@@ -1,5 +1,6 @@
 import { DosAndDonts } from '@/blocks/DosAndDonts'
 import type { CollectionConfig } from 'payload'
+import { Accessibility } from '../blocks/Accessibility'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -21,6 +22,64 @@ export const Posts: CollectionConfig = {
       type: 'richText',
       required: true,
     },
+    {
+      name: 'dosAndDonts',
+      label: "Do's and Don'ts",
+      type: 'blocks',
+      blocks: [DosAndDonts],
+      maxRows: 1,
+      defaultValue: [
+        {
+          blockType: 'dosAndDonts',
+          dos: [],
+          donts: [],
+        },
+      ],
+    },
+    {
+      name: 'accessibility',
+      type: 'blocks',
+      blocks: [Accessibility],
+      maxRows: 3,
+      defaultValue: [
+        {
+          blockType: 'accessibility',
+          type: 'keyboard_web',
+          accessibilityTable: [],
+        },
+        {
+          blockType: 'accessibility',
+          type: 'screen_reader_web',
+          accessibilityTable: [],
+        },
+        {
+          blockType: 'accessibility',
+          type: 'screen_reader_mobile',
+          accessibilityTable: [],
+        },
+      ],
+    },
+    {
+      name: 'tags',
+      type: 'array',
+      fields: [
+        {
+          name: 'tag',
+          type: 'text',
+        },
+      ],
+    },
+    {
+      name: 'categories',
+      type: 'array',
+      fields: [
+        {
+          name: 'category',
+          type: 'text',
+        },
+      ],
+    },
+    // Sidebar fields
     {
       name: 'status',
       type: 'select',
@@ -54,40 +113,6 @@ export const Posts: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
-    },
-    {
-      name: 'dosAndDonts',
-      label: "Do's and Don'ts",
-      type: 'blocks',
-      blocks: [DosAndDonts],
-      maxRows: 1,
-      defaultValue: [
-        {
-          blockType: 'dosAndDonts',
-          dos: [],
-          donts: [],
-        },
-      ],
-    },
-    {
-      name: 'tags',
-      type: 'array',
-      fields: [
-        {
-          name: 'tag',
-          type: 'text',
-        },
-      ],
-    },
-    {
-      name: 'categories',
-      type: 'array',
-      fields: [
-        {
-          name: 'category',
-          type: 'text',
-        },
-      ],
     },
   ],
 }

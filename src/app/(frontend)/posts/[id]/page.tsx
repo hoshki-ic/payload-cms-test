@@ -53,21 +53,65 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
         </div>
         <RichText data={data.content} />
 
-        {data.dosAndDonts?.map(
-          (block) =>
-            block.blockType === 'dosAndDonts' && (
-              <div key={block.id} className="mt-8">
-                <div className="mb-8">
-                  <h2>Dos:</h2>
-                  {block.dos?.map((item) => <ItemWithImage key={item.id} item={item} />)}
-                </div>
+        {data.dosAndDonts?.length && (
+          <div>
+            <h2>Dos and Don&apos;ts</h2>
+            {data.dosAndDonts?.map(
+              (block) =>
+                block.blockType === 'dosAndDonts' && (
+                  <div key={block.id} className="mt-8">
+                    <div className="mb-8">
+                      <h3>Dos:</h3>
+                      {block.dos?.map((item) => <ItemWithImage key={item.id} item={item} />)}
+                    </div>
 
-                <div>
-                  <h2>Donts:</h2>
-                  {block.donts?.map((item) => <ItemWithImage key={item.id} item={item} />)}
-                </div>
-              </div>
-            ),
+                    <div>
+                      <h3>Donts:</h3>
+                      {block.donts?.map((item) => <ItemWithImage key={item.id} item={item} />)}
+                    </div>
+                  </div>
+                ),
+            )}
+          </div>
+        )}
+
+        {data.accessibility?.length && (
+          <div>
+            <h2>Accessibility</h2>
+            {data.accessibility?.map(
+              (block) =>
+                block.blockType === 'accessibility' && (
+                  <div key={block.id} className="mt-8">
+                    <Image
+                      // @ts-ignore
+                      src={block.mainImage.url}
+                      alt={block.type}
+                      width={100}
+                      height={100}
+                      className="rounded"
+                    />
+                    <h3>{block.type}</h3>
+                    <p>{block.description}</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Property</th>
+                          <th>Value</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {block.accessibilityTable?.map((item) => (
+                          <tr key={item.id}>
+                            <td>{item.key}</td>
+                            <td>{item.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ),
+            )}
+          </div>
         )}
       </article>
     </div>
