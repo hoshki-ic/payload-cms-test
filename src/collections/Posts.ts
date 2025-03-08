@@ -12,43 +12,14 @@ export const Posts: CollectionConfig = {
       type: 'text',
     },
     {
-      name: 'content',
-      type: 'richText',
-      required: true,
-    },
-    {
-      name: 'author',
-      type: 'relationship',
-      relationTo: 'users',
-      required: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'tags',
-      type: 'array',
-      fields: [
-        {
-          name: 'tag',
-          type: 'text',
-        },
-      ],
-    },
-    {
-      name: 'categories',
-      type: 'array',
-      fields: [
-        {
-          name: 'category',
-          type: 'text',
-        },
-      ],
-    },
-    {
       name: 'featuredImage',
       type: 'upload',
       relationTo: 'media',
+    },
+    {
+      name: 'content',
+      type: 'richText',
+      required: true,
     },
     {
       name: 'status',
@@ -76,9 +47,47 @@ export const Posts: CollectionConfig = {
       },
     },
     {
-      name: 'blocksTest',
+      name: 'author',
+      type: 'relationship',
+      relationTo: 'users',
+      required: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'dosAndDonts',
+      label: "Do's and Don'ts",
       type: 'blocks',
       blocks: [DosAndDonts],
+      maxRows: 1,
+      defaultValue: [
+        {
+          blockType: 'dosAndDonts',
+          dos: [],
+          donts: [],
+        },
+      ],
+    },
+    {
+      name: 'tags',
+      type: 'array',
+      fields: [
+        {
+          name: 'tag',
+          type: 'text',
+        },
+      ],
+    },
+    {
+      name: 'categories',
+      type: 'array',
+      fields: [
+        {
+          name: 'category',
+          type: 'text',
+        },
+      ],
     },
   ],
 }

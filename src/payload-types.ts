@@ -157,6 +157,7 @@ export interface Media {
 export interface Post {
   id: string;
   title?: string | null;
+  featuredImage?: (string | null) | Media;
   content: {
     root: {
       type: string;
@@ -172,23 +173,10 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  author: string | User;
-  tags?:
-    | {
-        tag?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  categories?:
-    | {
-        category?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  featuredImage?: (string | null) | Media;
   status?: ('draft' | 'published') | null;
   publishedDate?: string | null;
-  blocksTest?:
+  author: string | User;
+  dosAndDonts?:
     | {
         dos?:
           | {
@@ -207,6 +195,18 @@ export interface Post {
         id?: string | null;
         blockName?: string | null;
         blockType: 'dosAndDonts';
+      }[]
+    | null;
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  categories?:
+    | {
+        category?: string | null;
+        id?: string | null;
       }[]
     | null;
   updatedAt: string;
@@ -312,24 +312,12 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
-  content?: T;
-  author?: T;
-  tags?:
-    | T
-    | {
-        tag?: T;
-        id?: T;
-      };
-  categories?:
-    | T
-    | {
-        category?: T;
-        id?: T;
-      };
   featuredImage?: T;
+  content?: T;
   status?: T;
   publishedDate?: T;
-  blocksTest?:
+  author?: T;
+  dosAndDonts?:
     | T
     | {
         dosAndDonts?:
@@ -352,6 +340,18 @@ export interface PostsSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+      };
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  categories?:
+    | T
+    | {
+        category?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
