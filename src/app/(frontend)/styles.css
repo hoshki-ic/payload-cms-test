@@ -127,8 +127,8 @@ svg {
 
 .item-with-image img {
   border-radius: 8px;
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
 }
 
@@ -137,11 +137,23 @@ svg {
   margin: 48px 0;
 }
 
+.dos-and-donts-card,
 .accessibility-card {
   background: rgb(20, 20, 20);
   border-radius: 8px;
   padding: 32px;
+}
+
+.accessibility-item {
+  padding-bottom: 32px;
   margin-bottom: 32px;
+  border-bottom: 1px solid rgb(40, 40, 40);
+}
+
+.accessibility-item:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
 }
 
 .accessibility-header {
@@ -159,6 +171,10 @@ svg {
 
 .accessibility-content {
   flex: 1;
+}
+
+.accessibility-content h3 {
+  margin-top: 0;
 }
 
 .accessibility-table {

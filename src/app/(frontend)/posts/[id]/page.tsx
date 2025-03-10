@@ -23,7 +23,7 @@ const ItemWithImage = ({
 
   return (
     <div className="item-with-image">
-      <Image src={imageSrc} alt={item.text} width={100} height={100} />
+      <Image src={imageSrc} alt={item.text} width={200} height={200} />
       <p>{item.text}</p>
     </div>
   )
@@ -52,76 +52,94 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
           Published on: {new Date(data.publishedDate!).toLocaleDateString()}
         </div>
 
+        {data.featuredImage && (
+          <div className="featured-image">
+            <Image
+              // @ts-ignore
+              src={data.featuredImage.url}
+              alt={data.title!}
+              width={0}
+              height={0}
+              sizes="100vw"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </div>
+        )}
+
         <RichText data={data.content} />
 
         {data.dosAndDonts?.length && (
-          <div className="dos-and-donts">
-            <h2>Dos and Don&apos;ts</h2>
-            {data.dosAndDonts?.map(
-              (block) =>
-                block.blockType === 'dosAndDonts' && (
-                  <div key={block.id}>
-                    <div>
-                      <h3>Dos:</h3>
-                      {block.dos?.map((item) => <ItemWithImage key={item.id} item={item} />)}
-                    </div>
+          <div className="dos-and-donts-section">
+            <h2>Do&apos;s and Don&apos;ts</h2>
+            <div className="dos-and-donts-card">
+              {data.dosAndDonts?.map(
+                (block) =>
+                  block.blockType === 'dosAndDonts' && (
+                    <div key={block.id}>
+                      <div>
+                        <h3>Dos:</h3>
+                        {block.dos?.map((item) => <ItemWithImage key={item.id} item={item} />)}
+                      </div>
 
-                    <div>
-                      <h3>Donts:</h3>
-                      {block.donts?.map((item) => <ItemWithImage key={item.id} item={item} />)}
+                      <div>
+                        <h3>Donts:</h3>
+                        {block.donts?.map((item) => <ItemWithImage key={item.id} item={item} />)}
+                      </div>
                     </div>
-                  </div>
-                ),
-            )}
+                  ),
+              )}
+            </div>
           </div>
         )}
 
         {data.accessibility?.length && (
           <div className="accessibility-section">
             <h2>Accessibility</h2>
-            {data.accessibility?.map(
-              (block) =>
-                block.blockType === 'accessibility' && (
-                  <div key={block.id} className="accessibility-card">
-                    <div className="accessibility-header">
-                      <Image
-                        // @ts-ignore
-                        src={block.mainImage.url}
-                        alt={block.type}
-                        width={200}
-                        height={200}
-                      />
-                      <div className="accessibility-content">
-                        <h3>
-                          {block.type === 'keyboard_web'
-                            ? 'Keyboard (web)'
-                            : block.type === 'screen_reader_web'
-                              ? 'Screen Reader (web)'
-                              : 'Screen Reader (Mobile)'}
-                        </h3>
-                        {block.description && <p>{block.description}</p>}
+            <div className="accessibility-card">
+              {data.accessibility?.map(
+                (block) =>
+                  block.blockType === 'accessibility' && (
+                    <div key={block.id} className="accessibility-item">
+                      <div className="accessibility-header">
+                        <Image
+                          // @ts-ignore
+                          src={block.mainImage.url}
+                          alt={block.type}
+                          width={200}
+                          height={200}
+                        />
+                        <div className="accessibility-content">
+                          <h3>
+                            {block.type === 'keyboard_web'
+                              ? 'Keyboard (web)'
+                              : block.type === 'screen_reader_web'
+                                ? 'Screen Reader (web)'
+                                : 'Screen Reader (Mobile)'}
+                          </h3>
+                          {block.description && <p>{block.description}</p>}
+                        </div>
                       </div>
-                    </div>
 
-                    <table className="accessibility-table">
-                      <thead>
-                        <tr>
-                          <th>Property</th>
-                          <th>Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {block.accessibilityTable?.map((item) => (
-                          <tr key={item.id}>
-                            <td>{item.key}</td>
-                            <td>{item.value}</td>
+                      <table className="accessibility-table">
+                        <thead>
+                          <tr>
+                            <th>Property</th>
+                            <th>Value</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ),
-            )}
+                        </thead>
+                        <tbody>
+                          {block.accessibilityTable?.map((item) => (
+                            <tr key={item.id}>
+                              <td>{item.key}</td>
+                              <td>{item.value}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ),
+              )}
+            </div>
           </div>
         )}
       </article>
