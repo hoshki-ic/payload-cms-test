@@ -1,4 +1,6 @@
+import { DosAndDonts } from '@/blocks/DosAndDonts'
 import type { CollectionConfig } from 'payload'
+import { Accessibility } from '../blocks/Accessibility'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -11,18 +13,51 @@ export const Posts: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'featuredImage',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
       name: 'content',
       type: 'richText',
       required: true,
     },
     {
-      name: 'author',
-      type: 'relationship',
-      relationTo: 'users',
-      required: true,
-      admin: {
-        position: 'sidebar',
-      },
+      name: 'dosAndDonts',
+      label: "Do's and Don'ts",
+      type: 'blocks',
+      blocks: [DosAndDonts],
+      maxRows: 1,
+      defaultValue: [
+        {
+          blockType: 'dosAndDonts',
+          dos: [],
+          donts: [],
+        },
+      ],
+    },
+    {
+      name: 'accessibility',
+      type: 'blocks',
+      blocks: [Accessibility],
+      maxRows: 3,
+      defaultValue: [
+        {
+          blockType: 'accessibility',
+          type: 'keyboard_web',
+          accessibilityTable: [],
+        },
+        {
+          blockType: 'accessibility',
+          type: 'screen_reader_web',
+          accessibilityTable: [],
+        },
+        {
+          blockType: 'accessibility',
+          type: 'screen_reader_mobile',
+          accessibilityTable: [],
+        },
+      ],
     },
     {
       name: 'tags',
@@ -44,11 +79,7 @@ export const Posts: CollectionConfig = {
         },
       ],
     },
-    {
-      name: 'featuredImage',
-      type: 'upload',
-      relationTo: 'media',
-    },
+    // Sidebar fields
     {
       name: 'status',
       type: 'select',
@@ -70,6 +101,15 @@ export const Posts: CollectionConfig = {
     {
       name: 'publishedDate',
       type: 'date',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'author',
+      type: 'relationship',
+      relationTo: 'users',
+      required: true,
       admin: {
         position: 'sidebar',
       },

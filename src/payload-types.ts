@@ -157,6 +157,7 @@ export interface Media {
 export interface Post {
   id: string;
   title?: string | null;
+  featuredImage?: (string | null) | Media;
   content: {
     root: {
       type: string;
@@ -172,7 +173,44 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  author: string | User;
+  dosAndDonts?:
+    | {
+        dos?:
+          | {
+              text: string;
+              image: string | Media;
+              id?: string | null;
+            }[]
+          | null;
+        donts?:
+          | {
+              text: string;
+              image: string | Media;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'dosAndDonts';
+      }[]
+    | null;
+  accessibility?:
+    | {
+        mainImage: string | Media;
+        type: 'keyboard_web' | 'screen_reader_web' | 'screen_reader_mobile';
+        description?: string | null;
+        accessibilityTable?:
+          | {
+              key: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'accessibility';
+      }[]
+    | null;
   tags?:
     | {
         tag?: string | null;
@@ -185,9 +223,9 @@ export interface Post {
         id?: string | null;
       }[]
     | null;
-  featuredImage?: (string | null) | Media;
   status?: ('draft' | 'published') | null;
   publishedDate?: string | null;
+  author: string | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -291,8 +329,52 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  featuredImage?: T;
   content?: T;
-  author?: T;
+  dosAndDonts?:
+    | T
+    | {
+        dosAndDonts?:
+          | T
+          | {
+              dos?:
+                | T
+                | {
+                    text?: T;
+                    image?: T;
+                    id?: T;
+                  };
+              donts?:
+                | T
+                | {
+                    text?: T;
+                    image?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  accessibility?:
+    | T
+    | {
+        accessibility?:
+          | T
+          | {
+              mainImage?: T;
+              type?: T;
+              description?: T;
+              accessibilityTable?:
+                | T
+                | {
+                    key?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
   tags?:
     | T
     | {
@@ -305,9 +387,9 @@ export interface PostsSelect<T extends boolean = true> {
         category?: T;
         id?: T;
       };
-  featuredImage?: T;
   status?: T;
   publishedDate?: T;
+  author?: T;
   updatedAt?: T;
   createdAt?: T;
 }
