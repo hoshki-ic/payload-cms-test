@@ -6,6 +6,10 @@ export const Posts: CollectionConfig = {
   slug: 'posts',
   admin: {
     useAsTitle: 'title',
+    preview: ({ id }) => {
+      const baseURL = process.env.NEXT_PUBLIC_SERVER_URL
+      return `${baseURL}/posts/${id}`
+    },
   },
   fields: [
     {
@@ -28,36 +32,12 @@ export const Posts: CollectionConfig = {
       type: 'blocks',
       blocks: [DosAndDonts],
       maxRows: 1,
-      defaultValue: [
-        {
-          blockType: 'dosAndDonts',
-          dos: [],
-          donts: [],
-        },
-      ],
     },
     {
       name: 'accessibility',
       type: 'blocks',
       blocks: [Accessibility],
       maxRows: 3,
-      defaultValue: [
-        {
-          blockType: 'accessibility',
-          type: 'keyboard_web',
-          accessibilityTable: [],
-        },
-        {
-          blockType: 'accessibility',
-          type: 'screen_reader_web',
-          accessibilityTable: [],
-        },
-        {
-          blockType: 'accessibility',
-          type: 'screen_reader_mobile',
-          accessibilityTable: [],
-        },
-      ],
     },
     {
       name: 'tags',
