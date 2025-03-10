@@ -1,6 +1,6 @@
 import React from 'react'
 import { fileURLToPath } from 'url'
-
+import Link from 'next/link'
 import config from '@/payload.config'
 import './styles.css'
 
@@ -14,32 +14,32 @@ export default async function HomePage() {
       <div className="content">
         <p>Checkout the posts below</p>
         <div className="posts">
-          <a href="/posts">Posts</a>
+          <Link href="/posts">Posts</Link>
         </div>
         <div className="links">
-          <a
+          <Link
             className="admin"
             href={payloadConfig.routes.admin}
             rel="noopener noreferrer"
             target="_blank"
           >
             Go to admin panel
-          </a>
-          <a
+          </Link>
+          <Link
             className="docs"
             href="https://payloadcms.com/docs"
             rel="noopener noreferrer"
             target="_blank"
           >
             Documentation
-          </a>
+          </Link>
         </div>
       </div>
       <div className="footer">
         <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
+        <Link className="codeLink" href={fileURL}>
           <code>app/(frontend)/page.tsx</code>
-        </a>
+        </Link>
       </div>
     </div>
   )
