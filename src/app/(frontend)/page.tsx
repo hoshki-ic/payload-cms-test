@@ -12,10 +12,6 @@ export default async function HomePage() {
   return (
     <div className="home">
       <div className="content">
-        <p>Checkout the posts below</p>
-        <div className="posts">
-          <Link href="/posts">Posts</Link>
-        </div>
         <div className="links">
           <Link
             className="admin"
@@ -33,6 +29,11 @@ export default async function HomePage() {
           >
             Documentation
           </Link>
+        </div>
+        <div>
+          <div className="posts">
+            <Link href="/posts">Check out the posts</Link>
+          </div>
         </div>
       </div>
       <div className="footer">
