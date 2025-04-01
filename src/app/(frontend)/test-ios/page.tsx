@@ -167,14 +167,13 @@ export default function TestGitHubPage() {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">GitHub Integration Test</h1>
-            <p className="text-gray-600">Test fetching code and snapshots from the iOS design system repository</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Simple Test Page for iOS</h1>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             {/* Test Buttons Section */}
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Test Actions</h2>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">Github IconButton</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <button
                   onClick={handleTestUIKitCode}
