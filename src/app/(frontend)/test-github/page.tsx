@@ -10,13 +10,16 @@ export default function TestGitHubPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [codeContent, setCodeContent] = useState<string>('')
   const [snapshotUrl, setSnapshotUrl] = useState<string>('')
+  const [apiResponse, setApiResponse] = useState<string>('')
 
   const handleTestCode = async () => {
     try {
       setIsLoading(true)
-      setStatus('Fetching code...')
       setError('')
+      setStatus('')
       setCodeContent('')
+      setSnapshotUrl('')
+      setApiResponse('')
 
       const result = await fetchiOSCode(
         'instacart/instacart-design-system-ios',
@@ -32,9 +35,8 @@ export default function TestGitHubPage() {
         throw new Error('Unexpected response type: ' + result.type)
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
-      setError(`Error: ${errorMessage}`)
-      setStatus('')
+      console.error('Error fetching code:', err)
+      setError(err instanceof Error ? err.message : 'Failed to fetch code')
     } finally {
       setIsLoading(false)
     }
@@ -43,25 +45,34 @@ export default function TestGitHubPage() {
   const handleTestSnapshot = async () => {
     try {
       setIsLoading(true)
-      setStatus('Fetching snapshot...')
       setError('')
+      setStatus('')
+      setCodeContent('')
       setSnapshotUrl('')
+      setApiResponse('')
 
+      // Use the exact path from the GitHub URL
+      const path = 'Tests+SwiftUI/__Snapshots__/XIconButtonTestCase/test_iconButton_darkOverlay.Large.png'
+      console.log('Trying path:', path)
+      
       const result = await fetchiOSSnapshot(
         'instacart/instacart-design-system-ios',
-        'Tests+SwiftUI/__Snapshots__/XIconButtonTestCase/test_iconButton_darkOverlay.Large.png',
+        path,
         '' // Empty string since we're using environment token
       )
-
+      
       console.log('Snapshot result:', result)
-      console.log('Snapshot URL:', result.content)
+      setApiResponse(JSON.stringify(result, null, 2))
 
-      setStatus('Snapshot fetched successfully!')
-      setSnapshotUrl(result.content)
+      if (result.type === 'image') {
+        setSnapshotUrl(result.content)
+        setStatus('Snapshot fetched successfully!')
+      } else {
+        throw new Error('Unexpected response type: ' + result.type)
+      }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
-      setError(`Error: ${errorMessage}`)
-      setStatus('')
+      console.error('Error fetching snapshot:', err)
+      setError(err instanceof Error ? err.message : 'Failed to fetch snapshot')
     } finally {
       setIsLoading(false)
     }
@@ -70,16 +81,11 @@ export default function TestGitHubPage() {
   const handleTestPost = async () => {
     try {
       setIsLoading(true)
-      setStatus('Creating test post...')
       setError('')
-
-      // First, get the current user's ID
-      const userResponse = await fetch('/api/users/me')
-      if (!userResponse.ok) {
-        throw new Error('Failed to get current user')
-      }
-      const userData = await userResponse.json()
-      console.log('User data:', userData)
+      setStatus('')
+      setCodeContent('')
+      setSnapshotUrl('')
+      setApiResponse('')
 
       const response = await fetch('/api/posts', {
         method: 'POST',
@@ -87,43 +93,26 @@ export default function TestGitHubPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: 'Simple iOS Page',
-          content: {
-            root: {
-              children: [
-                {
-                  children: [
-                    {
-                      text: 'Testing for iOS page',
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-          author: {
-            relationTo: 'users',
-            value: userData.id
-          },
-          status: 'draft',
-          publishedDate: new Date().toISOString(),
-          tags: [{ tag: 'ios' }],
-          categories: [{ category: 'development' }],
+          title: 'Test Post',
+          content: 'This is a test post created from the test page.',
+          status: 'published',
+          author: '65f8f9b9c4b0a1b1c1d1e1f1', // Replace with a valid user ID
+          tags: ['65f8f9b9c4b0a1b1c1d1e1f2'], // Replace with valid tag IDs
+          categories: ['65f8f9b9c4b0a1b1c1d1e1f3'], // Replace with valid category IDs
         }),
       })
 
+      const data = await response.json()
+      console.log('Post creation response:', data)
+
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to create post')
+        throw new Error(data.error || `Failed to create post: ${response.status} ${response.statusText}`)
       }
 
-      const result = await response.json()
-      setStatus('Test post created successfully!')
-      console.log('Post result:', result)
+      setStatus('Post created successfully!')
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
-      setError(`Error: ${errorMessage}`)
-      setStatus('')
+      console.error('Error creating post:', err)
+      setError(err instanceof Error ? err.message : 'Failed to create post')
     } finally {
       setIsLoading(false)
     }
