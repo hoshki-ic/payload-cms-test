@@ -85,10 +85,14 @@ export async function POST(req: Request) {
           path: item.path,
           type: item.type
         })))
-        return NextResponse.json(
-          { error: 'Path points to a directory, not a file' },
-          { status: 400 }
-        )
+        return NextResponse.json({
+          type: 'directory',
+          content: data.map(item => ({
+            type: item.type,
+            name: item.name,
+            path: item.path
+          }))
+        })
       }
 
       console.log('File data:', {

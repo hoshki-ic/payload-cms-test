@@ -1,6 +1,12 @@
+interface GitHubFile {
+  type: 'file' | 'dir';
+  name: string;
+  path: string;
+}
+
 interface GitHubContent {
-  content: string
-  type: 'text' | 'image'
+  type: 'text' | 'image' | 'directory';
+  content: string | GitHubFile[];
 }
 
 async function fetchGitHubContent(
@@ -59,6 +65,13 @@ const swiftFile = await fetchiOSCode(
 const snapshot = await fetchiOSSnapshot(
   'owner/repo',
   'path/to/snapshot.png',
+  'your-github-token'
+);
+
+// Fetch a directory of snapshots
+const snapshots = await fetchiOSSnapshot(
+  'owner/repo',
+  'path/to/snapshots',
   'your-github-token'
 );
 */ 
