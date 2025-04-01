@@ -47,18 +47,37 @@ export async function POST(req: Request) {
 
     // Get the content from GitHub
     try {
-      // First, verify the file exists and get its SHA
-      const { data: refData } = await octokit.git.getRef({
-        owner,
-        repo: repoName,
-        ref: 'heads/main'
-      })
-      console.log('Latest commit SHA:', refData.object.sha)
+      // Get repository info first to check access
+      try {
+        const { data: repoData } = await octokit.repos.get({
+          owner,
+          repo: repoName,
+        })
+        console.log('Repository info:', {
+          name: repoData.name,
+          defaultBranch: repoData.default_branch,
+          private: repoData.private
+        })
+      } catch (repoError: any) {
+        console.error('Repository access error:', {
+          status: repoError.status,
+          message: repoError.message
+        })
+        if (repoError.status === 404) {
+          return NextResponse.json(
+            { error: 'Repository not found or access denied' },
+            { status: 404 }
+          )
+        }
+        throw repoError
+      }
 
+      // Get the content directly without branch reference
       const { data } = await octokit.repos.getContent({
         owner,
         repo: repoName,
         path,
+        ref: 'master'  // Explicitly use master branch
       })
 
       if (Array.isArray(data)) {
@@ -105,18 +124,27 @@ export async function POST(req: Request) {
           { status: 404 }
         )
       }
-    } catch (contentError) {
-      console.error('Error fetching content:', contentError)
-      if (contentError instanceof Error) {
+    } catch (contentError: any) {
+      console.error('Error fetching content:', {
+        status: contentError.status,
+        message: contentError.message,
+        response: contentError.response?.data
+      })
+      
+      if (contentError.status === 404) {
         return NextResponse.json(
-          { error: contentError.message },
+          { error: 'File not found' },
           { status: 404 }
         )
       }
-      throw contentError
+      
+      return NextResponse.json(
+        { error: contentError.message },
+        { status: contentError.status || 500 }
+      )
     }
   } catch (error) {
-    console.error('Error fetching GitHub content:', error)
+    console.error('Error in GitHub content route:', error)
     if (error instanceof Error) {
       console.error('Error details:', {
         message: error.message,

@@ -24,9 +24,13 @@ export default function TestGitHubPage() {
         '' // Empty string since we're using environment token
       )
 
-      setStatus('Code fetched successfully!')
-      setCodeContent(result.content)
       console.log('Code result:', result)
+      if (result.type === 'text') {
+        setCodeContent(result.content)
+        setStatus('Code fetched successfully!')
+      } else {
+        throw new Error('Unexpected response type: ' + result.type)
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred'
       setError(`Error: ${errorMessage}`)
